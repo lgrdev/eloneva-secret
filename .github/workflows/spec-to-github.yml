@@ -1,0 +1,42 @@
+# Généré par spec-to-github (/relais:ci) v0.10.0 — relancer /relais:ci pour mettre à jour.
+name: relais
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: relais-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    name: Critères d'acceptation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Installation
+        run: |
+          pnpm install --frozen-lockfile
+      - name: Tests (rapport JUnit)
+        run: |
+          pnpm vitest run --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml && PLAYWRIGHT_JUNIT_OUTPUT_NAME=reports/e2e.xml pnpm playwright test --reporter=junit
+      - name: Vérification des critères d'acceptation
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node .github/spec-to-github/ci-check.mjs --junit reports/junit.xml --junit reports/e2e.xml
