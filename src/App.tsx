@@ -1,7 +1,9 @@
+import MiseEnPage from './components/MiseEnPage';
+
 export default function App() {
   return (
-    <main className="mx-auto max-w-2xl p-8">
-      <h1 className="text-3xl font-bold">Eloneva Secret</h1>
-    </main>
+    <MiseEnPage>
+      <h1 className="font-headline text-headline-lg text-on-surface">Eloneva Secret</h1>
+    </MiseEnPage>
   );
 }
