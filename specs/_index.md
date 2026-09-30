@@ -7,8 +7,8 @@
 |---|---|---|---|---|---|---|
 | S00 | [Socle](socle.md) | 0 | — | 🚀 publiée | #5 | — |
 | S01 | [Création d'un secret](creation-secret.md) | 1 | S00 | 🚀 publiée | #12 | — |
-| S02 | [Lien généré et partage](lien-genere-partage.md) | 2 | S01 | ✅ prête | — | — |
-| S03 | [Réception et révélation d'un secret](reception-revelation.md) | 2 | S01 | ✅ prête | — | — |
+| S02 | [Lien généré et partage](lien-genere-partage.md) | 2 | S01 | 🚀 publiée | #19 | — |
+| S03 | [Réception et révélation d'un secret](reception-revelation.md) | 2 | S01 | 🚀 publiée | #24 | — |
 | S04 | [Chiffrement client et mot de passe de déchiffrement](chiffrement-client.md) | 3 | S01, S02, S03 | ✅ prête | — | — |
 
 ## Vagues
@@ -24,8 +24,8 @@
 flowchart LR
   S00["S00 Socle<br/>publiée"]
   S01["S01 Création d'un secret<br/>publiée"]
-  S02["S02 Lien généré et partage<br/>prête"]
-  S03["S03 Réception et révélation d'un secret<br/>prête"]
+  S02["S02 Lien généré et partage<br/>publiée"]
+  S03["S03 Réception et révélation d'un secret<br/>publiée"]
   S04["S04 Chiffrement client et mot de passe de déchiffrement<br/>prête"]
   S00 --> S01
   S01 --> S02
