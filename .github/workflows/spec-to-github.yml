@@ -32,6 +32,9 @@ jobs:
       - name: Installation
         run: |
           pnpm install --frozen-lockfile
+      - name: Navigateurs Playwright
+        run: |
+          pnpm exec playwright install --with-deps chromium
       - name: Tests (rapport JUnit)
         run: |
           pnpm vitest run --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml && PLAYWRIGHT_JUNIT_OUTPUT_NAME=reports/e2e.xml pnpm playwright test --reporter=junit
