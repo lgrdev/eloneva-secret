@@ -40,12 +40,13 @@ Le commutateur de chiffrement client (AES-GCM 256) et le mot de passe de déchif
 | Type | Oui | Message, Mot de passe, Lien | Non | Durée de vie choisie |
 | Contenu du secret | Oui | Texte ; 1500 longueur max | Potentiellement (contenu libre) | Jusqu'à lecture ou expiration |
 | Durée de vie | Oui | 1 h, 4 h, 24 h, 7 j, 14 j | Non | — |
-| Identifiant du secret | Oui (généré) | format en tpphs://url_site/s/<slug> ([a-z0-9]) | Non | Durée de vie choisie |
+| Identifiant du secret | Oui (généré par le serveur) | 32 caractères `[a-z0-9]`, aléatoire ; utilisé dans l'URL `https://secret.eloneva.com/s/<identifiant>` | Non | Durée de vie choisie |
 
 ## Erreurs et cas limites
 - Contenu vide → > message affiché "Sans doute une erreur, le secret ne peut pas être vide."
 - Contenu au-delà de la longueur maximale → > message affiché "Le secret est trop long, vous êtes limité à 1500 caractères." et en attente modification de l'utilisateur
-- Échec d'enregistrement (serveur ou Valkey indisponible) : Message affiché : "Une erreur est survenue, le secret n'a pas pu être créé. Veuillez réessayer." et  L'expéditeur peut réessayer la création du secret.
+- Échec d'enregistrement (serveur ou Valkey indisponible) → règle commune S00 RG-7 (erreur 500, message générique, redirection vers l'écran de création).
+- Plus de 60 créations dans l'heure depuis la même adresse IP → création refusée (S00 RG-9).
 
 ## Droits d'accès
 | Action | Rôles autorisés |
@@ -57,7 +58,6 @@ Le commutateur de chiffrement client (AES-GCM 256) et le mot de passe de déchif
 - Étant donné l'onglet Mot de passe, quand l'expéditeur utilise l'assistant, alors un mot de passe est généré dans la zone de saisie.
 - Étant donné une saisie, quand l'expéditeur tape du texte, alors le compteur de caractères se met à jour.
 - Étant donné le sélecteur de durée, alors seules les valeurs 1 h, 4 h, 24 h, 7 j et 14 j sont proposées, 24 h étant marquée « recommandé ».
-- Étant donné l'écran de création, alors l'option d'autodestruction à la 1ʳᵉ lecture est activée par défaut.
 - Étant donné un secret créé avec une durée de 1 h, quand 1 h s'est écoulée, alors le secret n'est plus lisible.
 - Étant donné un contenu valide, quand l'expéditeur valide, alors l'écran du lien généré s'affiche.
 
@@ -73,6 +73,6 @@ Le commutateur de chiffrement client (AES-GCM 256) et le mot de passe de déchif
 - S00 : stockage Valkey avec durée de vie, mise en page commune.
 
 ## Traçabilité
-- « Liens Autodestructeurs » (l. 23-24), « Expiration Temporelle » (l. 26-27), « Formats Multiples » (l. 32-33).
+- « Expiration Temporelle » (l. 26-27), « Formats Multiples » (l. 32-33).
 - « envoi d'un secret », étapes 1 et 2 (l. 38-40).
 - Écran 1, « Création de Secret » (l. 49-54), sauf chiffrement client et mot de passe de déchiffrement.

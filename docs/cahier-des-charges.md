@@ -49,7 +49,7 @@ celui-ci n'apparait que lorsque le bouton est cliqué.
 Sélecteur de type multi-format : Onglets interactifs pour Message confidentiel, Mot de passe (avec assistant de génération) et Lien secret / URL.
 Zone de saisie sécurisée : Éditeur monospace avec compteur de caractères et commutateur de chiffrement client (AES-GCM 256-bit).
 Gestion fine de l'expiration temporelle (TTL) : Sélecteur direct pour 1 heure, 4 heures, 24 heures (recommandé), 7 jours ou 14 jours.
-Options de sécurité avancées : Autodestruction dès la 1ère lecture (activée par défaut) et mot de passe de déchiffrement optionnel.
+Options de sécurité avancées : mot de passe de déchiffrement optionnel. Le secret est toujours à lecture unique.
 Garanties architecturales : Mise en avant de la stack technique souveraine (Valkey in-memory sans persistance disque, Traefik edge proxy TLS 1.3, zéro trace et zéro compte).
 
 2. 🔗 Écran du Lien Généré (EloNeva Secret - Lien généré)

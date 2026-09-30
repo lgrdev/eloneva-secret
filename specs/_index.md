@@ -9,7 +9,7 @@
 | S01 | [Création d'un secret](creation-secret.md) | 1 | S00 | 📝 brouillon | — | — |
 | S02 | [Lien généré et partage](lien-genere-partage.md) | 2 | S01 | 📝 brouillon | — | — |
 | S03 | [Réception et révélation d'un secret](reception-revelation.md) | 2 | S01 | 📝 brouillon | — | — |
-| S04 | [Chiffrement client et mot de passe de déchiffrement](chiffrement-client.md) | 3 | S01, S03 | 📝 brouillon | — | — |
+| S04 | [Chiffrement client et mot de passe de déchiffrement](chiffrement-client.md) | 3 | S01, S02, S03 | 📝 brouillon | — | — |
 
 ## Vagues
 
@@ -31,9 +31,10 @@ flowchart LR
   S01 --> S02
   S01 --> S03
   S01 --> S04
+  S02 --> S04
   S03 --> S04
 ```
 
 ## Revue globale
 
-- Aucune revue globale : /relais:review --all
+- ✅ À jour, sans point bloquant.
