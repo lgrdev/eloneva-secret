@@ -19,7 +19,7 @@ Eloneva Secret est un service gratuit, sans inscription, de liens auto-destructe
 ## Règles métier
 - **RG-1** — Aucune inscription ni aucun compte utilisateur (« zéro compte »).
 - **RG-2** — Les secrets sont stockés dans Valkey, avec une durée de vie propre à chaque enregistrement : à expiration, l'enregistrement est supprimé définitivement.
-- **RG-3** — Valkey fonctionne en mémoire, sans persistance disque.
+- **RG-3** — Valkey fonctionne en mémoire, sans persistance disque. Quand sa mémoire est pleine, il refuse les nouvelles écritures : aucun secret n'est supprimé avant son expiration. La création échoue alors selon RG-7.
 - **RG-4** — Les échanges passent par des connexions chiffrées : Traefik en frontal, TLS 1.3.
 - **RG-5** — Le navigateur n'accède jamais directement à Valkey : tout passe par l'API REST du serveur.
 - **RG-6** — L’interface suit le système de design « Kinetic Sentinel » (`docs/design/kinetic_sentinel/DESIGN.md`) et le logo (`docs/design/eloneva_secret_logo/`). En cas d'écart avec les maquettes, la spécification prime.
@@ -29,13 +29,14 @@ Eloneva Secret est un service gratuit, sans inscription, de liens auto-destructe
 
 ## Parcours
 1. Un visiteur ouvre `https://secret.eloneva.com` et arrive sur l'écran de création d'un secret (S01).
-- Mise en page commune (en-tête avec logo, pied de page) partagée par tous les écrans.
+- Mise en page commune (en-tête avec logo) partagée par tous les écrans.
 
 ## Données manipulées
 Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (couche `server/data/**`) avec expiration par enregistrement.
 
 ## Erreurs et cas limites
 - Valkey indisponible ou erreur serveur → RG-7.
+- Mémoire Valkey pleine → la création est refusée (RG-3, RG-7) ; les secrets existants restent lisibles jusqu'à leur expiration.
 
 ## Droits d'accès
 | Action | Rôles autorisés |
@@ -47,6 +48,7 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 - Étant donné une création puis une révélation de secret, alors ni l'application, ni Traefik, ni Valkey n'ont écrit de journal.
 - Étant donné une panne provoquée (Valkey arrêté), quand un utilisateur fait une action, alors aucun journal d'erreur n'est écrit.
 - Étant donné un projet vierge, quand on lance `pnpm dev`, alors l'application démarre et affiche la mise en page commune.
+- Étant donné la mémoire Valkey pleine, quand un expéditeur crée un secret, alors la création échoue selon RG-7 et les secrets existants restent lisibles.
 - Étant donné un enregistrement écrit dans Valkey avec une durée de vie, quand cette durée est écoulée, alors l'enregistrement n'est plus lisible.
 - Les commandes `pnpm lint`, `pnpm typecheck`, `pnpm test --run` et `pnpm build` s'exécutent sans erreur.
 - L'application se construit et se lance via Docker.
