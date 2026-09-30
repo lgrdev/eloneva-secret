@@ -24,7 +24,7 @@ Eloneva Secret est un service gratuit, sans inscription, de liens auto-destructe
 - **RG-5** — Le navigateur n'accède jamais directement à Valkey : tout passe par l'API REST du serveur.
 - **RG-6** — L’interface suit le système de design « Kinetic Sentinel » (`docs/design/kinetic_sentinel/DESIGN.md`) et le logo (`docs/design/eloneva_secret_logo/`). En cas d'écart avec les maquettes, la spécification prime.
 - **RG-7** — Panne serveur ou Valkey indisponible, sur tous les écrans : le serveur répond une erreur HTTP 500, le message « Service temporairement indisponible. Veuillez réessayer plus tard. » s'affiche et l'utilisateur est redirigé vers l'écran de création d'un secret (S01).
-- **RG-8** — Zéro trace : aucune journalisation des requêtes (ni adresse IP, ni identifiant, ni contenu), ni par l'application ni par Traefik.
+- **RG-8** — Zéro trace : aucune journalisation, ni par l'application ni par Traefik ni par Valkey. Ni journaux d'accès, ni journaux d'erreur : aucune adresse IP, aucun identifiant, aucun contenu n'est écrit, même en cas de panne.
 
 
 ## Parcours
@@ -36,7 +36,6 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 
 ## Erreurs et cas limites
 - Valkey indisponible ou erreur serveur → RG-7.
-- Limite de débit dépassée → message affiché, et code HTTP (429) 
 
 ## Droits d'accès
 | Action | Rôles autorisés |
@@ -45,8 +44,8 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 
 ## Critères d'acceptation métier
 - Étant donné Valkey indisponible, quand un utilisateur fait une action sur n'importe quel écran, alors le serveur répond 500, le message « Service temporairement indisponible. Veuillez réessayer plus tard. » s'affiche et l'utilisateur est redirigé vers l'écran de création.
-- Étant donné une adresse IP qui a créé 60 secrets dans l'heure, quand elle en crée un 61ᵉ, alors la création est refusée.
-- Étant donné une création puis une révélation de secret, alors ni l'application ni Traefik n'ont écrit de journal contenant l'adresse IP, l'identifiant ou le contenu du secret.
+- Étant donné une création puis une révélation de secret, alors ni l'application, ni Traefik, ni Valkey n'ont écrit de journal.
+- Étant donné une panne provoquée (Valkey arrêté), quand un utilisateur fait une action, alors aucun journal d'erreur n'est écrit.
 - Étant donné un projet vierge, quand on lance `pnpm dev`, alors l'application démarre et affiche la mise en page commune.
 - Étant donné un enregistrement écrit dans Valkey avec une durée de vie, quand cette durée est écoulée, alors l'enregistrement n'est plus lisible.
 - Les commandes `pnpm lint`, `pnpm typecheck`, `pnpm test --run` et `pnpm build` s'exécutent sans erreur.
@@ -61,6 +60,7 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 ## Hors périmètre
 - Toute fonctionnalité métier (création, partage, réception de secrets) : specs S01 à S04.
 - pied de page et mentions légales 
+- Limite de débit (anti-abus) : aucune limite sur le nombre de créations.
 - Accessibilité : aucun niveau n'est défini, ni pour le socle ni pour les fonctionnalités métier.
 
 ## Dépendances

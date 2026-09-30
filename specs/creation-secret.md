@@ -46,7 +46,6 @@ Le commutateur de chiffrement client (AES-GCM 256) et le mot de passe de déchif
 - Contenu vide → > message affiché "Sans doute une erreur, le secret ne peut pas être vide."
 - Contenu au-delà de la longueur maximale → > message affiché "Le secret est trop long, vous êtes limité à 1500 caractères." et en attente modification de l'utilisateur
 - Échec d'enregistrement (serveur ou Valkey indisponible) → règle commune S00 RG-7 (erreur 500, message générique, redirection vers l'écran de création).
-- Plus de 60 créations dans l'heure depuis la même adresse IP → création refusée (S00 RG-9).
 
 ## Droits d'accès
 | Action | Rôles autorisés |
