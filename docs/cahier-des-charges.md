@@ -11,7 +11,14 @@ Database : Valkey (avec durée de vie de chaque enregistrement)
 Proxy : Traefik ou nginx
 Mail : utilisation de resend
 
+## socle 
+
+- installe le socle de base pour le projet, avec les dépendances et la configuration initiale.
+
+
 ## Fonctionnalités 
+
+En cas d'écart avec les maquettes fournies, la spécification prime sur la maquette.
 
 ### Liens Autodestructeurs
 Vos secrets partagés se détruisent automatiquement après avoir été consultés ou après le délai d'expiration.
