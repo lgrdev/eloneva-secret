@@ -25,9 +25,6 @@ Eloneva Secret est un service gratuit, sans inscription, de liens auto-destructe
 - **RG-6** — L’interface suit le système de design « Kinetic Sentinel » (`docs/design/kinetic_sentinel/DESIGN.md`) et le logo (`docs/design/eloneva_secret_logo/`). En cas d'écart avec les maquettes, la spécification prime.
 - **RG-7** — Panne serveur ou Valkey indisponible, sur tous les écrans : le serveur répond une erreur HTTP 500, le message « Service temporairement indisponible. Veuillez réessayer plus tard. » s'affiche et l'utilisateur est redirigé vers l'écran de création d'un secret (S01).
 - **RG-8** — Zéro trace : aucune journalisation des requêtes (ni adresse IP, ni identifiant, ni contenu), ni par l'application ni par Traefik.
-- **RG-9** — Limite de débit : 60 créations de secret par heure et par adresse IP. Au-delà, la création est refusée. Le compteur est gardé en mémoire (Valkey) et expire au bout d'une heure ; il n'est pas journalisé.
-
-> ❓ Question : RG-9 — le compteur doit-il utiliser l'adresse IP en clair ou une empreinte (hachage) de celle-ci, pour ne rien garder d'identifiant même pendant une heure ?
 
 
 ## Parcours
@@ -39,7 +36,7 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 
 ## Erreurs et cas limites
 - Valkey indisponible ou erreur serveur → RG-7.
-- Limite de débit dépassée → > ❓ Question : message affiché, et code HTTP (429) ?
+- Limite de débit dépassée → message affiché, et code HTTP (429) 
 
 ## Droits d'accès
 | Action | Rôles autorisés |
@@ -58,12 +55,13 @@ Aucune donnée métier propre au socle. Le socle fournit l'accès à Valkey (cou
 ## Non-fonctionnel
 - TLS 1.3, HTTP/2, HTTP/3 au niveau du proxy.
 - Déploiement Docker.
-
 - Interface en français uniquement.
 - Responsive : utilisable sur mobile.
 
 ## Hors périmètre
 - Toute fonctionnalité métier (création, partage, réception de secrets) : specs S01 à S04.
+- pied de page et mentions légales 
+- Accessibilité : aucun niveau n'est défini, ni pour le socle ni pour les fonctionnalités métier.
 
 ## Dépendances
 - Services tiers : Valkey, Traefik.
