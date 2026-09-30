@@ -1,6 +1,6 @@
 ---
 spec: specs/socle.md
-spec_sha: 099dbb7cf3fcca99ad8a8bca4b222903b46d8612
+spec_sha: 068c5ca620ee50523197130df2d76daa3d6d206f
 verdict: à compléter
 date: 2026-09-30
 ---
@@ -17,24 +17,28 @@ La spec est courte et claire sur les principes : zéro compte, Valkey en mémoir
 - section: RG-9, Erreurs et cas limites
 - constat: la spec dit seulement « la création est refusée ». Le code HTTP, le message affiché et la possibilité d'indiquer quand réessayer ne sont pas fixés (question ouverte dans la spec). Le critère d'acceptation ne peut vérifier que le refus, pas ce que voit l'expéditeur.
 - proposition: « Au-delà de 60 créations dans l'heure, le serveur répond 429 et l'écran affiche : « Vous avez atteint la limite de 60 secrets par heure. Réessayez plus tard. » L'expéditeur reste sur l'écran de création, sa saisie est conservée. »
+- suivi (2026-09-30): limite de débit abandonnée (hors périmètre S00) ; plus de réponse à définir.
 
 ### R2 — MAJEUR — Adresse IP du client derrière Traefik
 - [x] résolu
 - section: RG-9
 - constat: derrière Traefik, l'application voit l'adresse de Traefik, pas celle du client. Si elle lit l'en-tête `X-Forwarded-For` sans restriction, n'importe qui peut le falsifier et contourner la limite. S'ajoute la question ouverte : faut-il garder l'IP en clair ou une empreinte dans le compteur ?
 - proposition: « L'adresse IP du client est prise dans l'en-tête posé par Traefik, uniquement quand la requête vient de Traefik. Le compteur utilise une empreinte (hachage avec sel) de l'adresse, jamais l'adresse en clair. »
+- suivi (2026-09-30): sans objet : plus de limite de débit, donc plus de compteur par adresse IP.
 
 ### R3 — MAJEUR — Limite de débit testée dans S00, alors que la création est dans S01
 - [x] résolu
 - section: RG-9, Critères d'acceptation
 - constat: le critère « une adresse IP qui a créé 60 secrets… » exige l'endpoint de création, qui est livré par S01. Tel quel, le critère ne peut pas être prouvé à la fin de S00.
 - proposition: S00 fournit le mécanisme de limitation, réutilisable et testé seul. Le critère « 61ᵉ création refusée » passe dans S01, qui renvoie à S00 RG-9.
+- suivi (2026-09-30): critère « 61ᵉ création » retiré de S00 et renvoi retiré de S01.
 
 ### R4 — MAJEUR — « Zéro trace » : périmètre à préciser
 - [x] résolu
 - section: RG-8, Critères d'acceptation
 - constat: « aucune journalisation des requêtes » ne dit pas si les journaux d'erreur de l'application sont autorisés (plantage, Valkey injoignable). Sans aucun journal, une panne ne peut pas être diagnostiquée. Sans règle précise, un message d'erreur pourrait contenir un identifiant ou une adresse IP. Le critère « aucun journal écrit » est vérifiable pour les journaux d'accès de Traefik (désactivés), mais pas pour tout le reste.
 - proposition: « Les journaux d'accès de Traefik et de l'application sont désactivés. Les journaux d'erreur techniques sont autorisés, sans adresse IP, sans identifiant de secret, sans contenu, sans en-têtes de requête. » Critère : une erreur provoquée écrit un journal qui ne contient aucune de ces données.
+- suivi (2026-09-30): zéro trace strict : aucun journal, ni d'accès ni d'erreur, ni application ni Traefik ni Valkey (RG-8) ; critère ajouté pour la panne.
 
 ### R5 — MAJEUR — Protections transverses absentes
 - [x] résolu
@@ -82,9 +86,9 @@ La spec est courte et claire sur les principes : zéro compte, Valkey en mémoir
 - proposition: citer les titres de sections du cahier des charges, et regrouper la liste.
 
 ## Questions pour le métier
-- [ ] Limite de débit dépassée : code 429, avec le message « Vous avez atteint la limite de 60 secrets par heure. Réessayez plus tard. » et la saisie conservée ? — impact : R1
-- [ ] Compteur de la limite de débit : empreinte de l'adresse IP (recommandé) ou adresse en clair ? — impact : R2
-- [ ] Journaux d'erreur techniques autorisés, sans adresse IP, identifiant ni contenu ? Ou aucun journal du tout ? — impact : R4
+- [x] Limite de débit dépassée : code 429, avec le message « Vous avez atteint la limite de 60 secrets par heure. Réessayez plus tard. » et la saisie conservée ? — impact : R1 — réponse : limite de débit abandonnée (métier, 2026-09-30)
+- [x] Compteur de la limite de débit : empreinte de l'adresse IP (recommandé) ou adresse en clair ? — impact : R2 — réponse : sans objet, limite abandonnée (métier, 2026-09-30)
+- [x] Journaux d'erreur techniques autorisés, sans adresse IP, identifiant ni contenu ? Ou aucun journal du tout ? — impact : R4 — réponse : aucun journal du tout, zéro trace strict (métier, 2026-09-30)
 - [ ] Mémoire Valkey pleine : refuser les nouvelles créations (recommandé) ou supprimer les secrets les plus anciens ? — impact : R6
 - [ ] Pied de page : mentions légales et page de confidentialité dans le socle, ou hors périmètre ? — impact : R7
 - [ ] Accessibilité : niveau RGAA / WCAG 2.1 AA, ou hors périmètre pour la première version ? — impact : R9

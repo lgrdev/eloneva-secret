@@ -1,5 +1,5 @@
 ---
-specs_hash: 8e4af2c7
+specs_hash: fe6ea5a3
 date: 2026-09-30
 verdict: prêt
 ---
@@ -55,6 +55,7 @@ Quatrième passage (2026-09-30), après les réponses métier. Aucun BLOQUANT. G
 ### G6 — MAJEUR — Anti-abus et « zéro trace » non couverts
 - [x] résolu
 - suivi (2026-09-30): limite de 60 créations par heure et par IP (S00 RG-9), journalisation par IP (S00 RG-8). La contradiction avec « zéro trace » est suivie en G9.
+- suivi (2026-09-30, revue S00): limite de débit abandonnée (hors périmètre S00) ; zéro trace strict, aucun journal (S00 RG-8).
 - specs: S00, S01, S03
 - constat: S00 et S01 RG-6 promettent « zéro trace », mais aucune spec ne dit ce qui est journalisé (logs Traefik et applicatifs, adresses IP). La question a été retirée de S00 sans réponse. Aucune spec ne traite l'abus : création massive de secrets (saturation de la mémoire Valkey) et essais de slugs sur `/s/<slug>`.
 - proposition: ajouter dans S00 (1) une politique de journalisation vérifiable, par exemple « aucun contenu, aucun slug complet, pas d'IP conservée au-delà de X », et (2) une limite de débit par IP sur la création et la révélation, avec seuils et message.
