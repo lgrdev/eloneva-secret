@@ -18,7 +18,7 @@
   },
   "notifications": { "onEpicPublished": true, "onReviewRequired": true, "onAutoMerge": true, "onBlocked": true, "onUserInputRequired": true,
     "onRunCompleted": true, "onSpecSynced": false, "onEpicReadyToClose": true, "onEpicCompleted": true },
-  "pullRequestReview": { "mode": "always", "mergeMethod": "squash", "alwaysReviewPaths": [], "maxChangedLines": 400 },
+  "pullRequestReview": { "mode": "if_pending", "mergeMethod": "squash", "alwaysReviewPaths": [], "maxChangedLines": 400 },
   "review": { "required": false },
   "releaseNotes": { "dir": "docs/releases" },
   "specs": { "dir": "specs", "requireUpstream": true, "requireGlobalReview": false },
