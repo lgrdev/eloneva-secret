@@ -15,15 +15,15 @@ Maquettes : `docs/design/eloneva_secret_d_verrouiller_le_secret/`, `docs/design/
 - Destinataire (visiteur anonyme possédant le lien) : révèle le secret.
 
 ## Règles métier
-- **RG-1** — L'ouverture de l'URL `/s/<slug>` affiche un écran « Déverrouiller le secret » sans le contenu du secret.
+- **RG-1** — L'ouverture de l'URL `/s/<identifiant>` affiche un écran « Déverrouiller le secret » sans le contenu du secret.
 - **RG-2** — L'ouverture de l'URL seule ne consomme pas le secret : seul le clic sur le bouton le révèle.
 - **RG-3** — Bouton central « Révéler le secret maintenant », avec une confirmation explicite que le clic purgera le secret du serveur. mettre un texte avertissant à côté du bouton : le secret sera supprimé après lecture.
-- **RG-4** — Au clic, le contenu est affiché et le secret est supprimé de Valkey (lecture unique, voir S01 RG-6).
+- **RG-4** — Au clic, le contenu est affiché et le secret est supprimé de Valkey.
 - **RG-5** — L'écran « Secret révélé & détruit » affiche :
   - un badge rouge confirmant la suppression de la clé de la mémoire Valkey ;
   - le contenu dans un bloc de code, avec un bouton de copie rapide ;
   - un avertissement : le contenu est perdu définitivement si la page est rafraîchie ou fermée ;
-  - un reçu d'audit : heure exacte de destruction et mention du chiffrement zéro-connaissance. 
+  - un reçu d'audit : heure exacte de destruction. La mention du chiffrement zéro-connaissance est traitée dans S04.
 
 Le champ facultatif de mot de passe de déchiffrement est traité dans S04.
 
@@ -69,7 +69,7 @@ Le champ facultatif de mot de passe de déchiffrement est traité dans S04.
 - Notification de l’expéditeur à la lecture.
 
 ## Dépendances
-- S01 : secret créé, identifiant, option d'autodestruction.
+- S01 : secret créé, identifiant.
 
 ## Traçabilité
 - « reception » (l. 43-45).

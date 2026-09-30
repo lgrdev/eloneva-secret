@@ -1,7 +1,7 @@
 ---
 id: S04
 titre: Chiffrement client et mot de passe de déchiffrement
-depend_de: [S01, S03]
+depend_de: [S01, S02, S03]
 ---
 
 # Chiffrement client et mot de passe de déchiffrement
@@ -14,13 +14,14 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 - Destinataire : saisit le mot de passe si l'expéditeur en a défini un.
 
 ## Règles métier
-- **RG-1** — L'écran de création propose un commutateur de chiffrement client (AES-GCM 256 bits).
+- **RG-1** — L'écran de création propose un commutateur de chiffrement client (AES-GCM 256 bits), activé par défaut.
 - **RG-2** — L'écran de création propose un mot de passe de déchiffrement optionnel.
 - **RG-3** — L'écran de déverrouillage (S03) affiche un champ facultatif de mot de passe, pour saisir la clé supplémentaire si l'expéditeur en a défini une.
-- **RG-4** — Le reçu d'audit de l'écran révélé mentionne le chiffrement zéro-connaissance.
+- **RG-4** — Le reçu d'audit de l'écran révélé (S03) mentionne le chiffrement zéro-connaissance, uniquement si le secret a été chiffré côté client.
+- **RG-5** — La clé de chiffrement est placée dans le fragment `#` de l'URL : `https://secret.eloneva.com/s/<identifiant>#<clé>`. Le fragment n'est jamais transmis au serveur ; le serveur ne stocke que le contenu chiffré.
+- **RG-6** — L'URL complète, avec le fragment, est utilisée partout où le lien est diffusé (copie, QR Code, message prêt à envoyer — S02).
+- **RG-7** — Le badge « Chiffré AES-256 » de la modale QR Code (S02) est affiché si le chiffrement client est activé, masqué sinon.
 
-> ❓ Question : RG-1 — le commutateur est-il activé par défaut ?
-> ❓ Question : RG-1 — où se trouve la clé de chiffrement (par ex. dans le fragment `#` de l'URL, jamais transmis au serveur) ? Le cahier des charges ne le précise pas.
 > ❓ Question : RG-2 — le mot de passe dépend-il du chiffrement client (clé dérivée du mot de passe) ou est-il vérifié par le serveur ?
 > ❓ Question : RG-3 — le champ de mot de passe s'affiche-t-il toujours (« facultatif ») ou seulement si le secret en exige un ?
 > ❓ Question : mot de passe erroné — nombre d'essais autorisés ? Le secret est-il détruit après échecs ? Un mauvais mot de passe consomme-t-il la lecture unique ?
@@ -50,7 +51,10 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 
 ## Critères d'acceptation métier
 - Étant donné l'écran de création, alors un commutateur de chiffrement client AES-GCM 256 bits et un champ de mot de passe optionnel sont proposés.
-- Étant donné un secret créé avec chiffrement client, alors le serveur ne stocke jamais le contenu en clair.
+- Étant donné l'écran de création, alors le chiffrement client est activé par défaut.
+- Étant donné un secret créé avec chiffrement client, alors le serveur ne stocke jamais le contenu en clair et l'URL générée contient la clé dans son fragment `#`.
+- Étant donné un secret chiffré, alors le badge « Chiffré AES-256 » est affiché dans la modale QR Code et le reçu d'audit mentionne le chiffrement zéro-connaissance.
+- Étant donné un secret non chiffré, alors le badge « Chiffré AES-256 » et la mention zéro-connaissance sont masqués.
 - Étant donné un secret protégé par mot de passe, quand le destinataire saisit le bon mot de passe et clique sur « Révéler », alors le contenu s'affiche en clair.
 - Étant donné un secret protégé par mot de passe, quand le destinataire saisit un mauvais mot de passe, alors le contenu n'est pas affiché.
 
@@ -58,10 +62,11 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 - Chiffrement réalisé dans le navigateur (AES-GCM 256 bits).
 
 ## Hors périmètre
-- Types de secret, durée de vie, autodestruction (S01).
+- Types de secret, durée de vie (S01).
 
 ## Dépendances
 - S01 : écran et données de création.
+- S02 : URL diffusée (copie, QR Code, message), badge de la modale QR Code.
 - S03 : écran de déverrouillage et révélation.
 
 ## Traçabilité
