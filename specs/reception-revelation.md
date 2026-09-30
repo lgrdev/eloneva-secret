@@ -21,7 +21,7 @@ Maquettes : `docs/design/eloneva_secret_d_verrouiller_le_secret/`, `docs/design/
 - **RG-4** — Au clic, le contenu est affiché et le secret est supprimé de Valkey.
 - **RG-5** — L'écran « Secret révélé & détruit » affiche :
   - un badge rouge confirmant la suppression de la clé de la mémoire Valkey ;
-  - le contenu dans un bloc de code, avec un bouton de copie rapide ;
+  - le contenu dans un bloc de code, avec un bouton de copie rapide ; un secret de type Lien est affiché en texte, non cliquable ;
   - un avertissement : le contenu est perdu définitivement si la page est rafraîchie ou fermée ;
   - un reçu d'audit : heure exacte de destruction. La mention du chiffrement zéro-connaissance est traitée dans S04.
 
@@ -58,6 +58,8 @@ Le champ facultatif de mot de passe de déchiffrement est traité dans S04.
 - Étant donné l'écran de déverrouillage, alors le bouton « Révéler le secret maintenant » et la mention de la purge sont affichés.
 - Étant donné un secret valide, quand le destinataire clique sur « Révéler », alors le contenu s'affiche et le secret est supprimé du serveur.
 - Étant donné un secret déjà révélé, quand l'URL est rouverte, alors le contenu n'est plus accessible.
+- Étant donné un secret de type Lien révélé, alors le lien est affiché en texte et n'est pas cliquable.
+- Étant donné une révélation de secret, alors ni l'application, ni Traefik, ni Valkey n'ont écrit de journal (S00 RG-8).
 - Étant donné l'écran révélé, alors le badge de destruction, le bouton de copie, l'avertissement de perte et l'heure de destruction sont affichés.
 - Étant donné deux demandes de révélation simultanées, alors une seule reçoit le contenu.
 
@@ -72,6 +74,7 @@ Le champ facultatif de mot de passe de déchiffrement est traité dans S04.
 - S01 : secret créé, identifiant.
 
 ## Traçabilité
+- « Liens Autodestructeurs » (destruction après consultation).
 - « reception » (l. 43-45).
 - Écran 3, « Réception & Déverrouillage » (l. 70-72).
 - Écran 4, « Secret Révélé & Détruit » (l. 75-78).
