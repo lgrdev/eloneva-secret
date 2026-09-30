@@ -21,8 +21,13 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 - **RG-5** — La clé de chiffrement est placée dans le fragment `#` de l'URL : `https://secret.eloneva.com/s/<identifiant>#<clé>`. Le fragment n'est jamais transmis au serveur ; le serveur ne stocke que le contenu chiffré.
 - **RG-6** — L'URL complète, avec le fragment, est utilisée partout où le lien est diffusé (copie, QR Code, message prêt à envoyer — S02).
 - **RG-7** — Le badge « Chiffré AES-256 » de la modale QR Code (S02) est affiché si le chiffrement client est activé, masqué sinon.
-- **RG-8** — Vérification avant suppression : à la création, le navigateur calcule une empreinte de vérification à partir de la clé finale (clé du fragment et, le cas échéant, mot de passe) et l'envoie avec le contenu chiffré. À la révélation, le navigateur envoie l'empreinte recalculée ; le serveur ne renvoie et ne supprime le secret que si elle correspond. Après 5 échecs, le secret est détruit.
-- **RG-9** — Quand un mot de passe est défini, l'écran du lien généré (S02) rappelle à l'expéditeur de transmettre le mot de passe par un autre canal que le lien.
+- **RG-8** — Vérification avant suppression : à la création, le navigateur calcule une empreinte de vérification à partir de la clé finale (clé du fragment et, le cas échéant, mot de passe) et l'envoie avec le contenu chiffré. À la révélation, le navigateur envoie l'empreinte recalculée ; le serveur ne renvoie et ne supprime le secret que si elle correspond. Après 5 échecs, le secret est détruit. L'empreinte est dérivée de la clé finale par une fonction de dérivation distincte de celle qui produit la clé de chiffrement : elle ne permet pas de retrouver la clé.
+- **RG-9** — Quand un mot de passe est défini, l'écran du lien généré (S02) affiche : « Transmettez le mot de passe par un autre moyen que le lien (appel, SMS séparé…). »
+- **RG-10** — Après lecture de la clé, l'écran de déverrouillage retire le fragment `#` de l'URL affichée, sans recharger la page, pour que la clé ne reste pas dans l'historique du navigateur.
+- **RG-11** — S04 livre les évolutions des parcours déjà développés :
+  - S01 : commutateur et champ de mot de passe à la création, chiffrement avant envoi, envoi et stockage de l'empreinte et du compteur d'échecs (évolution de `POST /api/secrets`) ;
+  - S02 : URL avec `#<clé>` partout où le lien est diffusé, badge « Chiffré AES-256 », rappel de RG-9 ;
+  - S03 : indication « protégé » à l'ouverture, champ de mot de passe, vérification de l'empreinte avant suppression (évolution de la révélation), déchiffrement dans le navigateur, mention zéro-connaissance.
 
 ## Parcours
 1. Création (S01) : l'expéditeur active le chiffrement client et, s'il le souhaite, saisit un mot de passe de déchiffrement.
@@ -40,7 +45,7 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 | Nombre d'échecs de vérification | Si chiffrement activé | 0 à 5 | Non | Durée de vie du secret |
 
 ## Erreurs et cas limites
-- Mot de passe erroné → le serveur refuse l'empreinte (RG-8), le secret n'est pas consommé ; message « Mot de passe incorrect. Il vous reste N essais. » ; au 5ᵉ échec, le secret est détruit.
+- Mot de passe erroné → le serveur refuse l'empreinte (RG-8), le secret n'est pas consommé ; message « Mot de passe incorrect. Il vous reste N essais. » (« Il vous reste 1 essai. » au singulier) ; au 5ᵉ échec, le secret est détruit.
 - Clé absente ou altérée dans le lien → message : « Ce lien est incomplet ou altéré. » (le secret n'est pas consommé)
 - Navigateur sans API de chiffrement → message : « Votre navigateur ne permet pas de chiffrer ce secret. » (création bloquée, pas d'envoi en clair par repli ; à la réception, même message, secret non consommé)
 
@@ -63,6 +68,10 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 - Étant donné un secret sans mot de passe, alors l'écran de déverrouillage n'affiche pas de champ de mot de passe.
 - Étant donné un navigateur sans API de chiffrement, alors la création est bloquée avec le message « Votre navigateur ne permet pas de chiffrer ce secret. » et rien n'est envoyé.
 - Étant donné un secret chiffré, alors le serveur ne reçoit jamais la clé ni le mot de passe.
+- Étant donné l'empreinte stockée par le serveur, alors elle ne permet pas de déchiffrer le contenu.
+- Étant donné un secret protégé par mot de passe, alors l'écran du lien généré affiche « Transmettez le mot de passe par un autre moyen que le lien (appel, SMS séparé…). »
+- Étant donné l'écran de déverrouillage ouvert avec une clé dans l'URL, alors le fragment `#` est retiré de l'URL affichée.
+- Étant donné un 4ᵉ échec, alors le message « Mot de passe incorrect. Il vous reste 1 essai. » s'affiche.
 
 ## Non-fonctionnel
 - Chiffrement réalisé dans le navigateur (AES-GCM 256 bits).
@@ -76,6 +85,4 @@ Renforcer la confidentialité : l'expéditeur peut chiffrer le secret dans son n
 - S03 : écran de déverrouillage et révélation.
 
 ## Traçabilité
-- Écran 1 : « commutateur de chiffrement client (AES-GCM 256-bit) » (l. 51), « mot de passe de déchiffrement optionnel » (l. 53).
-- Écran 3 : « Champ facultatif de mot de passe » (l. 73).
-- Écran 4 : « chiffrement zéro-connaissance » (l. 78).
+- Cahier des charges, « Liste des écrans » : écran 1 « commutateur de chiffrement client (AES-GCM 256-bit) » et « mot de passe de déchiffrement optionnel » ; écran 2, modale « badge Chiffré AES-256 » ; écran 3 « Champ facultatif de mot de passe » ; écran 4 « chiffrement zéro-connaissance ».
