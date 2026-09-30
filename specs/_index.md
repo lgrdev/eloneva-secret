@@ -5,7 +5,7 @@
 
 | Spec | Titre | Vague | Dépend de | Statut | Epic | Avancement |
 |---|---|---|---|---|---|---|
-| S00 | [Socle](socle.md) | 0 | — | 📝 brouillon | — | — |
+| S00 | [Socle](socle.md) | 0 | — | ✅ prête | — | — |
 | S01 | [Création d'un secret](creation-secret.md) | 1 | S00 | 📝 brouillon | — | — |
 | S02 | [Lien généré et partage](lien-genere-partage.md) | 2 | S01 | 📝 brouillon | — | — |
 | S03 | [Réception et révélation d'un secret](reception-revelation.md) | 2 | S01 | 📝 brouillon | — | — |
@@ -22,7 +22,7 @@
 
 ```mermaid
 flowchart LR
-  S00["S00 Socle<br/>brouillon"]
+  S00["S00 Socle<br/>prête"]
   S01["S01 Création d'un secret<br/>brouillon"]
   S02["S02 Lien généré et partage<br/>brouillon"]
   S03["S03 Réception et révélation d'un secret<br/>brouillon"]
