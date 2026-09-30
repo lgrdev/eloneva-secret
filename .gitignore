@@ -1,0 +1,5 @@
+# Relais
+.claude/tmp/
+.claude/handoff/
+.claude/settings.local.json
+reports/
