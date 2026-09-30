@@ -1,5 +1,5 @@
 ---
-specs_hash: bdfff846
+specs_hash: ff5f6c4d
 date: 2026-09-30
 verdict: prêt
 ---
