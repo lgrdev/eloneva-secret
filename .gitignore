@@ -2,4 +2,8 @@
 .claude/tmp/
 .claude/handoff/
 .claude/settings.local.json
+reports/node_modules/
+dist/
 reports/
+playwright-report/
+test-results/
