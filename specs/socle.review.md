@@ -1,7 +1,7 @@
 ---
 spec: specs/socle.md
-spec_sha: 068c5ca620ee50523197130df2d76daa3d6d206f
-verdict: à compléter
+spec_sha: e896cc91598803b0474f0580fd2a2ddb4f7aeb28
+verdict: prêt
 date: 2026-09-30
 ---
 
@@ -56,12 +56,14 @@ La spec est courte et claire sur les principes : zéro compte, Valkey en mémoir
 - section: RG-2, RG-3
 - constat: Valkey fonctionne en mémoire, sans disque. Quand la mémoire est pleine, soit il supprime des clés existantes (des secrets disparaîtraient sans prévenir avant leur expiration), soit il refuse les écritures. La spec ne choisit pas.
 - proposition: « Valkey refuse les nouvelles écritures quand sa mémoire est pleine (aucune suppression de secret avant expiration). La création échoue alors selon RG-7. » Fixer la mémoire allouée.
+- suivi (2026-09-30): Valkey refuse les écritures quand sa mémoire est pleine, création en échec selon RG-7 (RG-3, cas limite et critère ajoutés).
 
 ### R7 — MAJEUR — Mentions légales et contenu du pied de page
 - [x] résolu
 - section: Parcours (mise en page commune)
 - constat: le pied de page est cité sans contenu. Un site public édité en France doit publier des mentions légales (éditeur, hébergeur). Il faut aussi une information sur le traitement des données : même sans journal, l'adresse IP est traitée en mémoire pour la limite de débit. Le cahier des charges n'en parle pas.
 - proposition: décider du contenu du pied de page et des pages à créer (mentions légales, confidentialité). Si elles sont retenues, les ajouter au socle ; sinon, les inscrire explicitement en hors périmètre.
+- suivi (2026-09-30): pied de page et mentions légales hors périmètre pour la première version ; « pied de page » retiré du Parcours.
 
 ### R8 — MINEUR — Docker et Valkey sans persistance : critères flous
 - [x] résolu
@@ -74,10 +76,11 @@ La spec est courte et claire sur les principes : zéro compte, Valkey en mémoir
   - « Après redémarrage de Valkey, aucun secret n'est conservé. »
 
 ### R9 — MINEUR — Accessibilité non définie
-- [ ] résolu
+- [x] résolu
 - section: Non-fonctionnel
 - constat: la langue et le mobile sont fixés, mais aucun niveau d'accessibilité n'est défini.
 - proposition: « Niveau visé : RGAA / WCAG 2.1 AA » ou « hors périmètre pour la première version ».
+- suivi (2026-09-30): accessibilité hors périmètre pour la première version (Hors périmètre).
 
 ### R10 — MINEUR — Traçabilité et mise en forme
 - [ ] résolu
@@ -89,9 +92,9 @@ La spec est courte et claire sur les principes : zéro compte, Valkey en mémoir
 - [x] Limite de débit dépassée : code 429, avec le message « Vous avez atteint la limite de 60 secrets par heure. Réessayez plus tard. » et la saisie conservée ? — impact : R1 — réponse : limite de débit abandonnée (métier, 2026-09-30)
 - [x] Compteur de la limite de débit : empreinte de l'adresse IP (recommandé) ou adresse en clair ? — impact : R2 — réponse : sans objet, limite abandonnée (métier, 2026-09-30)
 - [x] Journaux d'erreur techniques autorisés, sans adresse IP, identifiant ni contenu ? Ou aucun journal du tout ? — impact : R4 — réponse : aucun journal du tout, zéro trace strict (métier, 2026-09-30)
-- [ ] Mémoire Valkey pleine : refuser les nouvelles créations (recommandé) ou supprimer les secrets les plus anciens ? — impact : R6
-- [ ] Pied de page : mentions légales et page de confidentialité dans le socle, ou hors périmètre ? — impact : R7
-- [ ] Accessibilité : niveau RGAA / WCAG 2.1 AA, ou hors périmètre pour la première version ? — impact : R9
+- [x] Mémoire Valkey pleine : refuser les nouvelles créations (recommandé) ou supprimer les secrets les plus anciens ? — impact : R6 — réponse : refuser les nouvelles créations (métier, 2026-09-30)
+- [x] Pied de page : mentions légales et page de confidentialité dans le socle, ou hors périmètre ? — impact : R7 — réponse : hors périmètre pour la première version (métier, 2026-09-30)
+- [x] Accessibilité : niveau RGAA / WCAG 2.1 AA, ou hors périmètre pour la première version ? — impact : R9 — réponse : hors périmètre pour la première version (métier, 2026-09-30)
 
 ## Couverture
 | Axe | Statut | Commentaire |
