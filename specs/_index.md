@@ -9,7 +9,7 @@
 | S01 | [Création d'un secret](creation-secret.md) | 1 | S00 | 🚀 publiée | #12 | — |
 | S02 | [Lien généré et partage](lien-genere-partage.md) | 2 | S01 | 🚀 publiée | #19 | — |
 | S03 | [Réception et révélation d'un secret](reception-revelation.md) | 2 | S01 | 🚀 publiée | #24 | — |
-| S04 | [Chiffrement client et mot de passe de déchiffrement](chiffrement-client.md) | 3 | S01, S02, S03 | ✅ prête | — | — |
+| S04 | [Chiffrement client et mot de passe de déchiffrement](chiffrement-client.md) | 3 | S01, S02, S03 | 🚀 publiée | #29 | — |
 
 ## Vagues
 
@@ -26,7 +26,7 @@ flowchart LR
   S01["S01 Création d'un secret<br/>publiée"]
   S02["S02 Lien généré et partage<br/>publiée"]
   S03["S03 Réception et révélation d'un secret<br/>publiée"]
-  S04["S04 Chiffrement client et mot de passe de déchiffrement<br/>prête"]
+  S04["S04 Chiffrement client et mot de passe de déchiffrement<br/>publiée"]
   S00 --> S01
   S01 --> S02
   S01 --> S03
