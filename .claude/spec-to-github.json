@@ -1,0 +1,37 @@
+{
+  "owner": "lgrdev",
+  "repo": "lgrdev/eloneva-secret",
+  "projectNumber": 8,
+  "labels": { "epic": "epic", "ticket": "feature" },
+  "branchPrefix": "feat/",
+  "tests": { "paths": ["tests/unit/**", "tests/e2e/**"] },
+  "guard": { "enabled": true, "allow": [] },
+  "dependencies": { "mode": "native" },
+  "ci": { "requireIssue": false },
+  "worktrees": { "dir": "../{repo}.worktrees", "copy": [".env", ".env.local"], "setup": "pnpm install --frozen-lockfile" },
+  "parallel": { "max": 3, "exclusiveLayers": ["db"], "autoContinue": false, "maxTicketsPerRun": 10 },
+  "projectManagement": { "provider": "github" },
+  "communication": {
+    "provider": "none",
+    "teams": { "webhookEnv": "SPEC2GH_TEAMS_WEBHOOK", "askTool": "" },
+    "slack": { "webhookEnv": "SPEC2GH_SLACK_WEBHOOK", "askTool": "" }
+  },
+  "notifications": { "onEpicPublished": true, "onReviewRequired": true, "onAutoMerge": true, "onBlocked": true, "onUserInputRequired": true,
+    "onRunCompleted": true, "onSpecSynced": false, "onEpicReadyToClose": true, "onEpicCompleted": true },
+  "pullRequestReview": { "mode": "always", "mergeMethod": "squash", "alwaysReviewPaths": [], "maxChangedLines": 400 },
+  "review": { "required": false },
+  "releaseNotes": { "dir": "docs/releases" },
+  "specs": { "dir": "specs", "requireUpstream": true, "requireGlobalReview": false },
+  "agents": { "db": "relais:agent-db", "server": "relais:agent-server", "front": "relais:agent-front", "test": "relais:agent-test" },
+  "fields": {
+    "status": {
+      "name": "Status",
+      "value": "Backlog",
+      "states": { "backlog": "Backlog", "todo": "Todo", "inProgress": "In Progress", "inReview": "In review", "done": "Done" }
+    },
+    "priority": {
+      "name": "Priority",
+      "map": { "P0": "P0", "P1": "P1", "P2": "P2" }
+    }
+  }
+}
