@@ -8,8 +8,7 @@ url de production : https://secret.eloneva.com
 ## Stack
 Front : React, Tailwind
 Database : Valkey (avec durée de vie de chaque enregistrement)
-Proxy : Traefik ou nginx
-Mail : utilisation de resend
+Proxy : Traefik 
 
 ## socle 
 
@@ -50,14 +49,13 @@ celui-ci n'apparait que lorsque le bouton est cliqué.
 Sélecteur de type multi-format : Onglets interactifs pour Message confidentiel, Mot de passe (avec assistant de génération) et Lien secret / URL.
 Zone de saisie sécurisée : Éditeur monospace avec compteur de caractères et commutateur de chiffrement client (AES-GCM 256-bit).
 Gestion fine de l'expiration temporelle (TTL) : Sélecteur direct pour 1 heure, 4 heures, 24 heures (recommandé), 7 jours ou 14 jours.
-Options de sécurité avancées : Autodestruction dès la 1ère lecture (activée par défaut), mot de passe de déchiffrement optionnel et webhook de notification.
+Options de sécurité avancées : Autodestruction dès la 1ère lecture (activée par défaut) et mot de passe de déchiffrement optionnel.
 Garanties architecturales : Mise en avant de la stack technique souveraine (Valkey in-memory sans persistance disque, Traefik edge proxy TLS 1.3, zéro trace et zéro compte).
 
 2. 🔗 Écran du Lien Généré (EloNeva Secret - Lien généré)
 Lien unique de transit : Affichage de l'URL sécurisée (https://secret.eloneva.com/s/...) avec bouton de copie instantanée en 1 clic.
-Options de diffusion : Boutons d'accès direct au QR Code, message prêt à envoyer, et e-mail.
+Options de diffusion : Boutons d’accès direct au QR Code et message prêt à envoyer.
 Avertissement de sécurité critique : Encadré prévenant l'expéditeur de ne pas tester le lien lui-même sous peine de détruire le secret immédiatement.
-Compteur de durée de vie & Killswitch : Horloge de compte à rebours avant purge automatique et bouton d'autodestruction manuelle d'urgence.
 
 Caractéristiques de la modale :
 En-tête explicite : Icône dédiée, titre "Partager via QR Code", explication pour le scan mobile et bouton de fermeture ✕.

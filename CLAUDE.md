@@ -11,9 +11,9 @@ Ce site vous permet de partager des mots de passe, des messages confidentiels vi
 * Données : Valkey, accès via le client officiel / bibliothèque Redis-compatible
 * Validation : Zod, schémas partagés dans `shared/schemas/**`
 * Tests : Vitest (`tests/unit/**`), Playwright (`tests/e2e/**`)
-* Proxy : Traefik ou Nginx, TLS 1.3, HTTP/2, HTTP/3
+* Proxy : Traefik, TLS 1.3, HTTP/2, HTTP/3
 * Déploiement : Docker
-* Mail : utilisation de Resend
+
 
 ### Commandes
 
