@@ -1,0 +1,27 @@
+# Eloneva Secret — orchestration Docker.
+# La couche server ajoute les services `app` et `traefik` sous `services:`.
+services:
+  valkey:
+    image: valkey/valkey:8-alpine
+    command: ["valkey-server", "/etc/valkey/valkey.conf"]
+    restart: unless-stopped
+    # Zéro trace : aucun journal Docker.
+    logging:
+      driver: none
+    volumes:
+      # Configuration en lecture seule uniquement ; aucun volume de données.
+      - ./valkey.conf:/etc/valkey/valkey.conf:ro
+    # Pas de port publié : Valkey n'est joignable que sur le réseau interne.
+    expose:
+      - "6379"
+    networks:
+      - interne
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+networks:
+  interne:
+    driver: bridge
