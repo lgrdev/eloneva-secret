@@ -5,6 +5,8 @@ epic_title: "Socle"
 epic_priority: P0
 status: Backlog
 epic_issue: 5
+closed: 2026-10-01
+release_notes: docs/releases/2026-10-01-socle.md
 ---
 
 # Epic : Socle
