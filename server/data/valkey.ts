@@ -82,6 +82,17 @@ export async function ecrireAvecDuree(cle: string, valeur: string, secondes: num
   await executer((c) => c.set(cle, valeur, 'EX', secondes));
 }
 
+/**
+ * Écrit `valeur` sous `cle` uniquement si la clé n'existe pas (SET NX EX).
+ * Renvoie `false` si la clé existe déjà (rien n'est écrasé).
+ */
+export async function ecrireSiAbsente(cle: string, valeur: string, secondes: number): Promise<boolean> {
+  if (!Number.isInteger(secondes) || secondes <= 0) {
+    throw new RangeError('Durée de vie invalide');
+  }
+  return (await executer((c) => c.set(cle, valeur, 'EX', secondes, 'NX'))) === 'OK';
+}
+
 /** Lit la valeur de `cle`, ou `null` si absente ou expirée. */
 export async function lire(cle: string): Promise<string | null> {
   return executer((c) => c.get(cle));
