@@ -4,10 +4,16 @@ import Fastify, { type FastifyInstance } from 'fastify';
 import fastifyStatic from '@fastify/static';
 import { enregistrerGestionErreurs } from '../utils/erreurs.js';
 import { routeSante } from './sante.js';
+import { routeSecrets } from './secrets.js';
+import type { GenerateurIdentifiant } from '../utils/identifiant.js';
 
 export interface AppOptions {
   /** Dossier du front construit ; servi si présent. */
   clientDir?: string | undefined;
+  /** Générateur d'identifiant, injectable pour les tests (collision). */
+  generateurIdentifiant?: GenerateurIdentifiant | undefined;
+  /** Horloge injectable pour les tests. */
+  maintenant?: (() => Date) | undefined;
 }
 
 export async function buildApp(options: AppOptions = {}): Promise<FastifyInstance> {
@@ -16,6 +22,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
 
   enregistrerGestionErreurs(app);
   routeSante(app);
+  routeSecrets(app, {
+    generateur: options.generateurIdentifiant,
+    maintenant: options.maintenant,
+  });
 
   const clientDir = resolve(options.clientDir ?? 'dist/client');
   if (existsSync(clientDir)) {
