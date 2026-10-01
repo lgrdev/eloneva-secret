@@ -1,0 +1,28 @@
+# Traefik, production : Let's Encrypt. Aucun accessLog.
+log:
+  level: ERROR
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+    http3: {}
+    http:
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: secret.eloneva.com
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      storage: /acme/acme.json
+      tlsChallenge: {}
+providers:
+  file:
+    directory: /etc/traefik/dynamic
+    watch: false

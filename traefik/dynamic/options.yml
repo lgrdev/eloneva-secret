@@ -1,0 +1,5 @@
+# TLS 1.3 minimum : toute connexion TLS 1.2 ou inférieure est refusée.
+tls:
+  options:
+    default:
+      minVersion: VersionTLS13

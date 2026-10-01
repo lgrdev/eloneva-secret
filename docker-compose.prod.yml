@@ -1,0 +1,12 @@
+# Surcharge production : certificats Let's Encrypt (challenge TLS-ALPN-01 sur le port 443).
+# Le fichier acme.json vit dans un volume nommé, hors dépôt.
+services:
+  traefik:
+    volumes: !override
+      - ./traefik/traefik.prod.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic/options.yml:/etc/traefik/dynamic/options.yml:ro
+      - ./traefik/dynamic/routes.yml:/etc/traefik/dynamic/routes.yml:ro
+      - acme:/acme
+
+volumes:
+  acme:

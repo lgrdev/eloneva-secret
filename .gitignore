@@ -8,3 +8,4 @@ dist/
 reports/
 playwright-report/
 test-results/
+certs/

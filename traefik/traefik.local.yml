@@ -1,0 +1,20 @@
+# Traefik, local : certificat auto-signé (dossier certs/, hors git).
+# Aucun accessLog ; journal applicatif limité aux erreurs.
+log:
+  level: ERROR
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+    http3: {}
+providers:
+  file:
+    directory: /etc/traefik/dynamic
+    watch: false
+

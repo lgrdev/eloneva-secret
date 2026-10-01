@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.claude
+.rtk
+certs
+reports
+tests
+plans
+specs
+docs
+playwright-report
+test-results
