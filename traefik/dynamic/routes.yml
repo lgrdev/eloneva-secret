@@ -1,0 +1,12 @@
+http:
+  routers:
+    app:
+      rule: Host(`secret.eloneva.com`)
+      entryPoints: [websecure]
+      service: app
+      tls: {}
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: http://app:3000

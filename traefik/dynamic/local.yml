@@ -1,0 +1,17 @@
+# Local uniquement : certificat auto-signé et accès via localhost.
+tls:
+  certificates:
+    - certFile: /certs/local.crt
+      keyFile: /certs/local.key
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/local.crt
+        keyFile: /certs/local.key
+http:
+  routers:
+    app-local:
+      rule: Host(`localhost`)
+      entryPoints: [websecure]
+      service: app
+      tls: {}
