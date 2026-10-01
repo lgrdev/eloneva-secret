@@ -1,3 +1,4 @@
+import CreationSecret from './pages/CreationSecret';
 import MiseEnPage from './components/MiseEnPage';
 import { useErreurService } from './hooks/useErreurService';
 
@@ -18,7 +19,7 @@ export default function App() {
           </button>
         </div>
       )}
-      <h1 className="font-headline text-headline-lg text-on-surface">Eloneva Secret</h1>
+      <CreationSecret />
     </MiseEnPage>
   );
 }
