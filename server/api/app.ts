@@ -2,7 +2,8 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Fastify, { type FastifyInstance } from 'fastify';
 import fastifyStatic from '@fastify/static';
-import { santeReponseSchema } from '../../shared/schemas/index.js';
+import { enregistrerGestionErreurs } from '../utils/erreurs.js';
+import { routeSante } from './sante.js';
 
 export interface AppOptions {
   /** Dossier du front construit ; servi si présent. */
@@ -13,11 +14,8 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
   // Zéro trace : aucune journalisation.
   const app = Fastify({ logger: false });
 
-  app.get('/api/sante', async () => santeReponseSchema.parse({ statut: 'ok' }));
-
-  app.setErrorHandler((_erreur, _requete, reponse) => {
-    void reponse.status(500).send({ erreur: 'Erreur interne' });
-  });
+  enregistrerGestionErreurs(app);
+  routeSante(app);
 
   const clientDir = resolve(options.clientDir ?? 'dist/client');
   if (existsSync(clientDir)) {
